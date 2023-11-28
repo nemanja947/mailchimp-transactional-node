@@ -16,7 +16,10 @@
 
 var axios = require('axios');
 
-axios.defaults.timeout = 300000; // 300s
+var axiosInstance = axios.create({
+  timeout: 300000, // 300s
+  maxBodyLength: Infinity
+});
 
 var Allowlists = require('./api/AllowlistsApi');
 var Exports = require('./api/ExportsApi');
@@ -93,7 +96,7 @@ exports.prototype.post = function post(path, body = {}) {
     url = url + '.' + defaultOutputFormat;
   }
 
-  return axios
+  return axiosInstance
     .post(url, body)
     .then(function (response) {
       return response.data;
